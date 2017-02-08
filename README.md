@@ -6,7 +6,7 @@ I decided to use Angular for this single page application with the help of Angul
 
 ## Getting Started
 
-This application is hosted on my Digital Ocean droplet @  
+This application is hosted on my Digital Ocean droplet @  http://107.170.74.97:8090/
 
 ### Design
 
