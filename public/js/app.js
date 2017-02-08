@@ -1,1 +1,1 @@
-angular.module('pizzaPlanetApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter'])
+angular.module('pizzaApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter'])

@@ -1,4 +1,4 @@
-angular.module('pizzaPlanetApp')
+angular.module('pizzaApp')
 .service('pizzaSrv', function($http) {
 
   var apiUrl = 'https://pizzaserver.herokuapp.com'
@@ -60,7 +60,5 @@ angular.module('pizzaPlanetApp')
       }
     })
   }
-
-
 
 })

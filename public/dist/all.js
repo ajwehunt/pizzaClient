@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('pizzaPlanetApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter']);
+angular.module('pizzaApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter']);
 
-angular.module('pizzaPlanetApp').service('pizzaSrv', function ($http) {
+angular.module('pizzaApp').service('pizzaSrv', function ($http) {
 
   var apiUrl = 'https://pizzaserver.herokuapp.com';
 
@@ -65,7 +65,7 @@ angular.module('pizzaPlanetApp').service('pizzaSrv', function ($http) {
   };
 });
 
-angular.module('pizzaPlanetApp').controller('pizzaCtrl', function ($scope, $timeout, $mdSidenav, $log, pizzaSrv) {
+angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $mdSidenav, $log, pizzaSrv) {
 
   //populate pizza list for ng-repeat
   pizzaSrv.getPizzas().then(function (res) {
@@ -204,25 +204,3 @@ angular.module('pizzaPlanetApp').controller('pizzaCtrl', function ($scope, $time
     $mdSidenav('right').close().then(function () {});
   };
 });
-
-// .controller('PositionDemoCtrl', function DemoCtrl($mdDialog) {
-//   var originatorEv;
-//
-//   this.menuHref = "http://www.google.com/design/spec/components/menus.html#menus-specs";
-//
-//   this.openMenu = function($mdMenu, ev) {
-//     originatorEv = ev;
-//     $mdMenu.open(ev);
-//   };
-//
-//   this.announceClick = function(index) {
-//     $mdDialog.show(
-//       $mdDialog.alert()
-//         .title('You clicked!')
-//         .textContent('You clicked the menu item at index ' + index)
-//         .ok('Nice')
-//         .targetEvent(originatorEv)
-//     );
-//     originatorEv = null;
-//   };
-// });
