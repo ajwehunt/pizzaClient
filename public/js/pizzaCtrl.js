@@ -170,7 +170,6 @@ angular.module('pizzaPlanetApp')
 
 
 
-
 // .controller('PositionDemoCtrl', function DemoCtrl($mdDialog) {
 //   var originatorEv;
 //
