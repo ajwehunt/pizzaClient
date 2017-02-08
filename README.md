@@ -6,6 +6,10 @@ I decided to use Angular for this single page application with the help of Angul
 
 ## Getting Started
 
+Instructions: 
+- Click the plus sign on the right to add a new pizza or topping.
+- Click on a pizza to view toppings, or to add new toppings.
+
 This application is hosted on my Digital Ocean droplet @  http://107.170.74.97:8090/
 
 ### Design
@@ -27,9 +31,9 @@ Here is the MVP outlined @ https://github.com/Tanga/pizza_server:
 
 
 I completed the MVP and added the following features:
-- Pizza/Toppings list has been cleaned up by removing duplicate and nameless entries.
+- Pizza/Toppings list has been cleaned up by removing duplicate and nameless entries
 - Pizza list is now sorted to show newest entries
-- Toppings list is sorted alphabetically.
+- Toppings list is sorted alphabetically
 - Mobile Responsive
 
 This project was fun. From the start I wanted to create my own DB so I could have a fresh start. However by following instruction, using Tanga's Pizza Server provided me the challenge of exploring the API, and filtering out the duplicate/empty data. This was a great coding challenge and it also left me quite hungry.
