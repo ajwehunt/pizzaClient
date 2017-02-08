@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Italiana|Italianno');
+
+h1,h2,h3,h4,h5,h6,button {
+  font-family: 'Italiana', serif;
+}
+
+p,a,li {
+  font-family: 'Italiana', serif;
+}

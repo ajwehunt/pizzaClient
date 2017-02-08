@@ -1,0 +1,423 @@
+// BODY
+body {
+  overflow:hidden;
+}
+
+//PIZZA LIST
+.pizzaExplorer {
+  padding-top: 140px;
+  background-color: #421c1c;
+  background-image: linear-gradient(335deg, #370505 23px, transparent 23px), linear-gradient(155deg, #430707 23px, transparent 23px), linear-gradient(335deg, #410505 23px, transparent 23px), linear-gradient(155deg, #470b0b 23px, transparent 23px);
+  background-size: 58px 58px;
+  background-position: 0px 2px, 4px 35px, 29px 31px, 34px 6px;
+}
+
+.pizzaExplorer::-webkit-scrollbar {
+    display: none;
+}
+
+.layout-wrap {
+  display: flex;
+  padding: 0 3%;
+  justify-content: space-around;
+}
+
+//PIZZA
+.pizza {
+  background: white;
+  display: flex;
+  margin: 15px 20px;
+  height: 350px;
+  width: 350px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  -webkit-transition: 250ms  cubic-bezier(0.25, 0.8, 0.25, 1) all;
+  -moz-transition: 250ms  cubic-bezier(0.25, 0.8, 0.25, 1) all;
+  -ms-transition: 250ms  cubic-bezier(0.25, 0.8, 0.25, 1) all;
+  -o-transition: 250ms  cubic-bezier(0.25, 0.8, 0.25, 1) all;
+  transition: 250ms cubic-bezier(0.25, 0.8, 0.25, 1) all;
+  background: #ab5f2b;
+  -webkit-box-shadow: inset 0 0 40px #e5a53b;
+  border: 1px solid #ab5f2b;
+  -webkit-box-shadow: 23px 35px 45px 6px rgba(0,0,0,0.48);
+  -moz-box-shadow: 23px 35px 45px 6px rgba(0,0,0,0.48);
+  box-shadow: 23px 35px 45px 6px rgba(0,0,0,0.48);
+}
+
+.pizza:focus {
+ outline: none;
+ border: 0;
+}
+
+.selected-item {
+  height: 400px;
+  width: 400px;
+  font-size: .6em;
+}
+
+.sauce {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 86%;
+  height: 88%;
+  border-radius: 50%;
+  background: #640d15;
+  -webkit-box-shadow: inset 0 0 10px #dd2f25;
+}
+
+.cheese {
+  position: relative;
+  display: flex;
+  width: 97%;
+  height: 93%;
+  border-radius: 50%;
+  background: #f3d255;
+  -webkit-box-shadow: inset 0 0 1000px #d88e24;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+}
+
+// Pepperoni
+
+.pep {
+	position: absolute;
+  width: 33px;
+  height: 33px;
+	border-radius: 60px;
+	background: #b3241c;
+	z-index: 15;
+	font-size: 2em;
+	text-align: center;
+	padding-top: 10px;
+	-webkit-box-shadow: inset 0 0 85px #711712;
+	border: 2px solid #871b15;
+	text-indent: -9999px;
+	color: #fff;
+}
+
+.pep.one{margin: 96px 0 0px -22px;}
+.pep.two{margin: -107px 0 0 42px;}
+.pep.three{margin: 103px 0 0 62px;}
+.pep.four{margin: 39px 0 0 -103px;}
+.pep.five{margin: -46px 0 0 -78px;}
+.pep.six{margin: -16px 0 0 92px;}
+.pep.seven{margin: -115px 0 0 -50px;}
+.pep.eight{margin: 24px 0 0 22px;}
+
+.cheese div {
+  width: 72%;
+  height: 72%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+}
+
+.cheese h2 {
+  margin-top: 3%;
+  font-weight: bold;;
+  font-size: 2.6em;
+}
+
+.cheese p {
+  margin-top: 10px;
+  font-family: 'Italianno', cursive;
+  font-size: 2.1em;
+}
+
+.selected-item .pizzaInfo {
+  height: 45%;
+}
+
+.pizzaInfo button {
+  visibility: hidden;
+  font-weight: 900;
+  font-size: 1.6em;
+}
+
+.selected-item .pizzaInfo button {
+  visibility: visible;;
+}
+
+.selectNewToppingList {
+  border-radius: 8%;
+  max-height: 191px;
+  border: none;
+}
+
+.md-whiteframe-4dp, .md-whiteframe-z2 {
+  box-shadow: none;
+  box-shadow: none;
+}
+
+.targetToppingsList {
+  display: flex;
+  width: 350px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.md-chips.md-default-theme .md-chips, md-chips .md-chips {
+  box-shadow: none;
+}
+
+// PIZZABANNER
+.pizzaBanner {
+  position: fixed;
+  right: 0;
+  top: 29px;
+  height: 94px;
+  width: 455px;
+  background: #fff;
+  opacity: 0.86;
+  font-size: 2em;
+  padding-left: 121px;
+  display: flex;
+  align-items: center;
+  color: #a60311;
+  z-index: 30;
+  font-weight: 600;
+}
+
+// SIDEBAR
+.sidebar {
+  background: #a60311;
+  position: fixed;
+  height: 100%;
+  width: 85px;
+  right: 0;
+  display: flex;
+  z-index: 25;
+}
+
+.addPizzaBtn {
+  top: 148px;
+  position: absolute;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  color: #000;
+  padding-left: 9px;
+}
+
+.addPizzaBtn button {
+  height: 65px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  font-size: 4em;
+  color: #005222;
+  padding-left: 8px;
+}
+
+.addPizzaBtn button i {
+  text-shadow: 0px 1px 1px rgba(200,245,255,0.5);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+}
+
+.addPizzaBtn p {
+  font-weight: 900;
+  margin-left: 5px;
+  color: #dfcbcc;
+  font-size: 1.1em;
+}
+
+//PiZZA/TOPPING BUILDER
+.pizzaBuilder {
+  z-index: 20;
+  height: 439px;;
+  width: 400px;
+  top: 148px;
+}
+
+.pizzaBuilder md-content {
+  padding-right: 70px;
+  height: 360px;
+}
+
+.md-toolbar-tools {
+  background: #005222;
+  font-weight: 900;
+  padding-left: 60px;
+}
+
+.pizzaForm md-input-container {
+  display: block;
+  margin: 8px 0px 0px;
+}
+
+.pizzaForm button {
+  margin-top: 0;
+}
+
+.toppingForm md-input-container {
+  display: block;
+  margin: 28px 0px 0px;
+}
+
+.toppingForm button {
+  margin-top: 0;
+}
+
+//BACKDROP
+md-backdrop.md-opaque {
+  opacity: .48;
+  z-index: 2;
+}
+
+
+////////ANIMATIONS////////////
+
+
+.repeat-animation {
+  position:relative;
+}
+
+.repeat-animation.ng-enter-stagger,
+.repeat-animation.ng-move-stagger {
+  /* notice how we're using animation instead of transition here */
+  -webkit-animation-delay:0.05s;
+  animation-delay:0.05s;
+
+  /* yes we still need to do this too */
+  -webkit-animation-duration:3;
+  animation-duration:3;
+}
+
+.repeat-animation.ng-move,
+.repeat-animation.ng-enter {
+  opacity:0;
+  -webkit-animation:enter_animation 0.05s;
+  animation:enter_animation 0.05s;
+  // -webkit-animation-name: bounceIn;
+  // animation-name: bounceIn;
+}
+
+.animate-enter,
+.animate-leave
+{
+    -webkit-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+    -moz-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+    -ms-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+    -o-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+    transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+    position: relative;
+    display: block;
+}
+
+.animate-enter.animate-enter-active,
+.animate-leave {
+    opacity: 1;
+    left: 0;
+    height: 30px;
+}
+
+.animate-leave.animate-leave-active,
+.animate-enter {
+    opacity: 0;
+    left: -50px;
+    height: 0px;
+}
+
+//////////////MOBILE @media Queries
+
+@media only screen and (max-width: 768px) {
+
+  .pizzaExplorer {
+    padding-top: 110px;
+  }
+
+  .pizzaBanner {
+    top: 15px;
+    height: 60px;
+    width: 256px;
+    font-size: 1em;
+    padding-left: 68px;
+  }
+
+  .sidebar {
+    width: 56px;
+  }
+
+  .addPizzaBtn {
+    top: 95px;
+    font-size: 1em;
+    padding-left: 3px;
+  }
+
+  .addPizzaBtn p {
+    margin-left: 0px;
+    font-size: .78em;
+  }
+
+  .addPizzaBtn button {
+    padding-left: 0;
+  }
+
+  .pizzaBuilder {
+    top: 97px;
+  }
+
+  .md-toolbar-tools {
+    padding-left: 26px;
+  }
+
+  .md-button {
+    min-height: 33px;
+    min-width: 69px;
+  }
+
+  .pizza {
+    margin-left: -22px;
+    height: 230px;
+    width: 230px;
+  }
+
+  .pep {
+    width: 25px;
+    height: 25px;
+  }
+
+  .pep.one{margin: 74px 0 0px -22px;}
+  .pep.two{margin: -67px 0 0 38px;}
+  .pep.three{margin: 54px 0 0 62px;}
+  .pep.four{margin: -25px 0 0 73px;}
+  .pep.five{margin: -74px 0 0 -39px;}
+  .pep.six{margin: 39px 0 0 -69px;}
+  .pep.seven{margin: -15px 0 0 -55px;}
+  .pep.eight{margin: 24px 0 0 22px;}
+
+  .pizzaInfo {
+    position: absolute;
+  }
+
+  .selected-item {
+    height: 250px;
+    width: 250px;
+    font-size: .6em;
+  }
+
+  .cheese p {
+    margin-top: 5px;
+    font-family: 'Italianno', cursive;
+    font-size: 1.4em;
+  }
+
+  .targetToppingsList {
+    margin-top: 79px;
+    z-index: 10;
+    width: 225px;
+  }
+
+}
