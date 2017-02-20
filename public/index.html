@@ -4,6 +4,7 @@
     <meta charset='utf-8'>
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <title>Pizza Builder</title>
+    <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -15,7 +16,7 @@
       <!-- PIZZA EXPLORER -->
       <md-content class='pizzaExplorer' layout='row'>
         <div layout-wrap flex>
-          <md-card ng-animate="'animate'" ng-repeat="pizza in pizzas  | filter: findpizza | unique: 'name' | omit: '!name' | orderBy:'-id'" ng-click="selectPizza($index, pizza.id, this)" class='pizza' ng-class="{ 'selected-item': $index == targetPizza}">
+          <md-card ng-animate="'animate'" ng-repeat="pizza in pizzas  | filter: findpizza | orderBy:'-id'" ng-click="selectPizza($index, pizza.id, this)" class='pizza' ng-class="{ 'selected-item': $index == targetPizza}">
             <section class='sauce'>
               <section class='cheese'>
                 <section class="pep one">1</section>
@@ -67,7 +68,7 @@
       </div>
       <!-- PIZZA BANNER -->
       <div class="pizzaBanner">
-        <h1>PIZZA
+        <h1>PIZZA BUILDER
         </h1>
       </div>
       <!-- PIZZA//TOPPING BUILDER -->
@@ -107,8 +108,7 @@
       </md-sidenav>
     <!--  -->
     </div>
-
-
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.js">
@@ -117,7 +117,6 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.js">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.14/angular-filter.min.js">
     </script>    <script type='text/javascript' src='./dist/all.js'>
     </script>

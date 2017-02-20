@@ -1,18 +1,24 @@
 angular.module('pizzaApp')
 .service('pizzaSrv', function($http) {
 
-  var apiUrl = 'https://pizzaserver.herokuapp.com'
+  const apiUrl = 'https://pizzaserver.herokuapp.com'
+
 
   //Get pizza list
-  this.getPizzas = function () {
+  this.getPizzas = () => {
     return $http({
       method: 'GET',
       url: apiUrl + '/pizzas'
     })
+    .then((res) => {
+      //filters out pizzas w/ same names and no names
+      res.data = res.data.filter((x, i, self) => (self.findIndex((t) => t.name === x.name) === i) && x.name)
+      return res
+    })
   }
 
   //Add a new pizza
-  this.addPizza = function(pizza, desc) {
+  this.addPizza = (pizza, desc) => {
     return $http({
       method: 'POST',
       url: apiUrl + '/pizzas',
@@ -24,7 +30,7 @@ angular.module('pizzaApp')
   }
 
   //Get toppings
-  this.getToppings = function () {
+  this.getToppings = () => {
     return $http({
       method: 'GET',
       url: apiUrl + '/toppings'
@@ -32,7 +38,7 @@ angular.module('pizzaApp')
   }
 
   //Add a new topping
-  this.addTopping = function (newTopping) {
+  this.addTopping = (newTopping) => {
     return $http({
       method: 'POST',
       url: apiUrl + '/toppings',
@@ -43,15 +49,22 @@ angular.module('pizzaApp')
   }
 
   //Get target pizza toppings
-  this.getTargetPizzaToppings = function (pizzaId) {
+  this.getTargetPizzaToppings = (pizzaId) => {
     return $http({
       method: 'GET',
       url: apiUrl + '/pizzas/' + pizzaId + '/toppings'
     })
+    .then((res) => {
+      return res
+    }, (err) => {
+      //finds Pizzas who are no longer associated with toppings in the db
+      return 'badPizza';
+    })
   }
 
+
   //Add target Topping to target Pizza
-  this.addToppingToPizza = function (pizzaId, toppingId) {
+  this.addToppingToPizza = (pizzaId, toppingId) => {
     return $http({
       method: 'POST',
       url: apiUrl + '/pizzas/' + pizzaId + '/toppings',

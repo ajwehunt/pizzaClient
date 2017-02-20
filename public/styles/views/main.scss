@@ -18,7 +18,7 @@ body {
 
 .layout-wrap {
   display: flex;
-  padding: 0 3%;
+  padding: 0 4%;
   justify-content: space-around;
 }
 
@@ -52,8 +52,8 @@ body {
 }
 
 .selected-item {
-  height: 400px;
-  width: 400px;
+  height: 375px;
+  width: 375px;
   font-size: .6em;
 }
 
@@ -99,6 +99,12 @@ body {
 	border: 2px solid #871b15;
 	text-indent: -9999px;
 	color: #fff;
+  transition: 250ms cubic-bezier(0.25, 0.8, 0.25, 1) all;
+}
+
+.selected-item .pep {
+  width: 38px;
+  height: 38px;
 }
 
 .pep.one{margin: 96px 0 0px -22px;}
@@ -118,6 +124,7 @@ body {
   flex-direction: column;
   align-items: center;
   z-index: 20;
+  transition: cubic-bezier(0.25, 0.8, 0.25, 1) all;
 }
 
 .cheese h2 {
@@ -168,6 +175,10 @@ body {
   box-shadow: none;
 }
 
+.md-chips md-chip {
+  transition: 100ms cubic-bezier(0.25, 0.8, 0.25, 1) all;
+}
+
 // PIZZABANNER
 .pizzaBanner {
   position: fixed;
@@ -177,13 +188,17 @@ body {
   width: 455px;
   background: #fff;
   opacity: 0.86;
-  font-size: 2em;
-  padding-left: 121px;
+  font-size: 1.2em;
+  padding-left: 73px;
+  letter-spacing: 2px;
   display: flex;
   align-items: center;
   color: #a60311;
   z-index: 30;
   font-weight: 600;
+  -webkit-box-shadow: 0px 5px 17px -4px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 5px 17px -4px rgba(0,0,0,0.75);
+  box-shadow: 0px 5px 17px -4px rgba(0,0,0,0.75);
 }
 
 // SIDEBAR
@@ -195,6 +210,9 @@ body {
   right: 0;
   display: flex;
   z-index: 25;
+  -webkit-box-shadow: -1px 0px 17px -4px rgba(0,0,0,0.75);
+  -moz-box-shadow: -1px 0px 17px -4px rgba(0,0,0,0.75);
+  box-shadow: -1px 0px 17px -4px rgba(0,0,0,0.75);
 }
 
 .addPizzaBtn {
@@ -302,46 +320,21 @@ md-backdrop.md-opaque {
   // animation-name: bounceIn;
 }
 
-.animate-enter,
-.animate-leave
-{
-    -webkit-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
-    -moz-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
-    -ms-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
-    -o-transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
-    transition: 250ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
-    position: relative;
-    display: block;
-}
 
-.animate-enter.animate-enter-active,
-.animate-leave {
-    opacity: 1;
-    left: 0;
-    height: 30px;
-}
-
-.animate-leave.animate-leave-active,
-.animate-enter {
-    opacity: 0;
-    left: -50px;
-    height: 0px;
-}
 
 //////////////MOBILE @media Queries
-
 @media only screen and (max-width: 768px) {
 
   .pizzaExplorer {
-    padding-top: 110px;
+    padding-top: 100px;
   }
 
   .pizzaBanner {
     top: 15px;
     height: 60px;
     width: 256px;
-    font-size: 1em;
-    padding-left: 68px;
+    font-size: .75em;
+    padding-left: 40px;
   }
 
   .sidebar {
@@ -385,6 +378,11 @@ md-backdrop.md-opaque {
   .pep {
     width: 25px;
     height: 25px;
+  }
+
+  .selected-item .pep {
+    width: 27px;
+    height: 27px;
   }
 
   .pep.one{margin: 74px 0 0px -22px;}
