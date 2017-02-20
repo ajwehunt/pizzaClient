@@ -11,6 +11,14 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
     return $http({
       method: 'GET',
       url: apiUrl + '/pizzas'
+    }).then(function (res) {
+      //filters out pizzas w/ same names and no names
+      res.data = res.data.filter(function (x, i, self) {
+        return self.findIndex(function (t) {
+          return t.name === x.name;
+        }) === i && x.name;
+      });
+      return res;
     });
   };
 
@@ -50,6 +58,11 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
     return $http({
       method: 'GET',
       url: apiUrl + '/pizzas/' + pizzaId + '/toppings'
+    }).then(function (res) {
+      return res;
+    }, function (err) {
+      //finds Pizzas who are no longer associated with toppings in the db
+      return 'badPizza';
     });
   };
 
@@ -65,7 +78,7 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
   };
 });
 
-angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $mdSidenav, $log, pizzaSrv) {
+angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $mdSidenav, $mdToast, $log, pizzaSrv) {
 
   //populate pizza list for ng-repeat
   pizzaSrv.getPizzas().then(function (res) {
@@ -79,69 +92,44 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
 
   //Select a pizza and show toppings
   $scope.targetPizza = undefined;
-
   $scope.selectPizza = function (index, pizzaId, toppings) {
     if ($scope.targetPizza !== index) {
+
+      //enlarge pizza
+      $scope.targetPizza = index;
 
       //show Add Topping Button
       var showToppingsButton = function showToppingsButton() {
         toppings.showToppingsButton = true;
       };
+      $timeout(showToppingsButton, 300);
 
+      //show toppings *if 500 status return error message
+      pizzaSrv.getTargetPizzaToppings(pizzaId).then(function (res) {
+        if (res === 'badPizza') {
+          $scope.targettoppings = [{ name: 'This Pizza Is Broken!', pizza_id: pizzaId }];
+        } else {
+          $scope.targettoppings = res.data;
+        }
+      });
       var showToppings = function showToppings() {
         toppings.showTargetToppings = true;
       };
+      $timeout(showToppings, 200);
 
-      //enlarge pizza
-      $scope.targetPizza = index;
-      $timeout(showToppingsButton, 300);
-
-      //show toppings
-      pizzaSrv.getTargetPizzaToppings(pizzaId).then(function successCallback(res) {
-        $scope.targettoppings = res.data;
-      }, function errorCallback(res) {
-        return { name: '' };
-      });
-
-      $timeout(showToppings, 300);
+      //Click another pizza or unclick the selected pizza
     } else {
-      //hide pizza
-      $scope.targetPizza = undefined;
-
       //hide Add Topping Button
       toppings.showToppingsButton = false;
 
       //hide toppings
       toppings.showTargetToppings = false;
+
+      //hide pizza
+      $timeout(function () {
+        return $scope.targetPizza = undefined;
+      }, 150);
     }
-  };
-
-  //Add New Pizza
-  $scope.addNewPizza = function () {
-    var newPizza = $scope.newPizzaName,
-        newDesc = $scope.newPizzaDesc;
-
-    pizzaSrv.addPizza(newPizza, newDesc).then(function successCallback(res) {
-      //empty inputs
-      $scope.newPizzaName = '';
-      $scope.newPizzaDesc = '';
-
-      //repopulate pizza list
-      $scope.pizzas.push(res.data);
-    }, function errorCallback(res) {});
-  };
-
-  //Add New topping
-  $scope.addNewTopping = function () {
-    var newTopping = $scope.newToppingName;
-
-    pizzaSrv.addTopping(newTopping).then(function successCallback(res) {
-      //empty input
-      $scope.newToppingName = '';
-
-      //repopulate toppinglist
-      $scope.toppings.push(res.data);
-    }, function errorCallback(res) {});
   };
 
   //Add a topping to a pizza
@@ -152,15 +140,90 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
   };
 
   $scope.addToppingToPizza = function (pizzaId, toppingId) {
-    pizzaSrv.addToppingToPizza(pizzaId, toppingId).then(function successCallback(res) {
+    pizzaSrv.addToppingToPizza(pizzaId, toppingId).then(function (res) {
 
       //repopulate target pizza toppings list
-      pizzaSrv.getTargetPizzaToppings(pizzaId).then(function successCallback(res) {
+      pizzaSrv.getTargetPizzaToppings(pizzaId).then(function (res) {
         $scope.targettoppings.push(res.data[res.data.length - 1]);
-      }, function errorCallback(res) {
-        return { name: '' };
       });
-    }, function errorCallback(res) {});
+    });
+  };
+
+  //Pizza Form Init
+  $scope.newPizzaName = '';
+  $scope.newPizzaDesc = '';
+  $scope.newToppingName = '';
+  //Toast
+  $scope.pizzaAlert = function (alert, location) {
+    $mdToast.show({
+      hideDelay: 1500,
+      position: 'bottom right',
+      controller: 'pizzaCtrl',
+      template: '<md-toast><i class="fa fa-exclamation" aria-hidden="true"></i><span class="md-toast-text" flex>' + alert + '</span></md-toast>',
+      parent: location
+    });
+  };
+
+  //Add New Pizza
+  $scope.addNewPizza = function () {
+    var newPizza = $scope.newPizzaName,
+        newDesc = $scope.newPizzaDesc;
+    //If no entry for Pizza => alert user
+    if ($scope.newPizzaName === '') {
+      //Error Toast
+      $scope.pizzaAlert('Please enter a pizza name', '.pizzaForm');
+
+      //if Pizza doesnt exist=> add pizza & alert user
+    } else if ($scope.pizzas.findIndex(function (x) {
+      return x.name.toLowerCase() === newPizza.toLowerCase();
+    }) === -1) {
+      pizzaSrv.addPizza(newPizza, newDesc).then(function (res) {
+        //Alert Toast
+        $scope.pizzaAlert('Pizza Added', '.pizzaForm');
+        //empty inputs
+        $scope.newPizzaName = '';
+        $scope.newPizzaDesc = '';
+        //repopulate pizza list
+        $scope.pizzas.push(res.data);
+      });
+
+      //If Pizza already exists => alert user
+    } else {
+      //Error Toast
+      $scope.pizzaAlert('This pizza already exists', '.pizzaForm');
+      //empty inputs
+      $scope.newPizzaName = '';
+    }
+  };
+
+  //Add New topping
+  $scope.addNewTopping = function () {
+    var newTopping = $scope.newToppingName;
+    //if no entry for topping => alert user
+    if ($scope.newToppingName === '') {
+      //Error Toast
+      $scope.pizzaAlert('Please enter a topping name', '.toppingForm');
+
+      //if topping doesnt exist=> add topping & alert user
+    } else if ($scope.toppings.findIndex(function (x) {
+      return x.name === newTopping;
+    }) === -1) {
+      pizzaSrv.addTopping(newTopping).then(function (res) {
+        //Alert Toast
+        $scope.pizzaAlert('Topping Added', '.toppingForm');
+        //empty input
+        $scope.newToppingName = '';
+        //repopulate toppinglist
+        $scope.toppings.push(res.data);
+      });
+
+      // if topping already exists => alert user
+    } else {
+      //Error Toast
+      $scope.pizzaAlert('This topping already exists', '.toppingForm');
+      //empty input
+      $scope.newToppingName = '';
+    }
   };
 
   //Open Add Pizza/Toppings Panel
