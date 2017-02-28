@@ -2,6 +2,8 @@ angular.module('pizzaApp')
 .controller('pizzaCtrl', function($scope, $timeout, $mdSidenav, $mdToast, $log, pizzaSrv) {
 
 
+///////////  PIZZAS  ////////////
+
   //populate pizza list for ng-repeat
   pizzaSrv.getPizzas().then((res) => {
     $scope.pizzas = res.data
@@ -71,7 +73,6 @@ angular.module('pizzaApp')
       });
     });
   }
-
 
 
   //Pizza Form Init
@@ -151,54 +152,123 @@ angular.module('pizzaApp')
 
 
 
+ ///////////  ORDERS  ////////////
 
-  //Open Add Pizza/Toppings Panel
-  $scope.toggleRight = buildToggler('right');
-  $scope.isOpenRight = () => {
-    return $mdSidenav('right').isOpen();
-  };
-  /**
-   * Supplies a function that will continue to operate until the
-   * time is up.
-   */
-  function debounce(func, wait, context) {
-    var timer;
-    return function debounced() {
-      var context = $scope,
-          args = Array.prototype.slice.call(arguments);
-      $timeout.cancel(timer);
-      timer = $timeout(function() {
-        timer = undefined;
-        func.apply(context, args);
-      }, wait || 10);
-    };
+  // Get orders
+  $scope.updateOrders = function () {
+    pizzaSrv.getOrders().then((orders) => {
+      $scope.orders = orders.data.map((x)=>{
+        //add list of pizzas to orders
+        pizzaSrv.getTargetOrderPizzas(x.id).then((pizzas)=>{
+          let pizzaList = []
+          pizzas.data.map((x)=>{
+            pizzaList.push(x.name)
+          })
+          x.pizzas = pizzaList
+        })
+        return x
+      })
+    })
   }
-  /**
-   * Build handler to open/close a SideNav; when animation finishes
-   * report completion in console
-   */
-  function buildDelayedToggler(navID) {
-    return debounce(function() {
-      // Component lookup should always be available since we are not using `ng-if`
-      $mdSidenav(navID)
-        .toggle()
-        .then(function () {
-        });
-    }, 200);
-  }
-  function buildToggler(navID) {
-    return function() {
-      // Component lookup should always be available since we are not using `ng-if`
-      $mdSidenav(navID)
-        .toggle()
-        .then(function () {
-        });
-    };
-  }
-  $scope.close = function () {
-    $mdSidenav('right').close()
-      .then(function () {
+  $scope.updateOrders()
+
+
+  $scope.newOrderName = '';
+  //Add new order
+  $scope.addNewOrder = () => {
+    let newOrder = $scope.newOrderName
+    //If no entry for Order => alert user
+    if ($scope.newOrderName === '') {
+      //Error Toast
+      $scope.pizzaAlert('Please enter an order name', '.orderForm');
+
+    //if Order doesnt exist=> add order & alert user
+  } else if ($scope.orders.findIndex(x=>x.name.toLowerCase() === newOrder.toLowerCase()) === -1) {
+      pizzaSrv.addOrder(newOrder).then((res) => {
+        //Alert Toast
+        $scope.pizzaAlert('Order Added', '.orderForm');
+        //empty inputs
+        $scope.newOrderName = '';
+        //repopulate order list
+        $scope.orders.push(res.data)
+        $scope.updateOrders()
       });
-  };
+
+    //If Order already exists => alert user
+    } else {
+      //Error Toast
+      $scope.pizzaAlert('This order already exists', '.orderForm');
+      //empty inputs
+      $scope.newOrderName = '';
+    }
+  }
+
+  // Add pizza to order
+  $scope.addPizzaToOrder = (pizzaId, pizzaName, orderId) => {
+    pizzaSrv.addPizzaToOrder(pizzaId, pizzaName, orderId).then((res) => {
+      $scope.updateOrders()
+    })
+  }
+
+
+
+ /////////  MENU UX  /////////////
+
+
+ //Open Add Pizza/Toppings Panel
+ $scope.toggleRight = buildToggler('right');
+ $scope.isOpenRight = () => {
+   return $mdSidenav('right').isOpen();
+ };
+
+ //Open Add // View Orders Panel
+ $scope.toggleRight2 = buildToggler('right2');
+ $scope.isOpenRight2 = () => {
+   return $mdSidenav('right2').isOpen();
+ };
+
+ /**
+  * Supplies a function that will continue to operate until the
+  * time is up.
+  */
+ function debounce(func, wait, context) {
+   var timer;
+   return function debounced() {
+     var context = $scope,
+         args = Array.prototype.slice.call(arguments);
+     $timeout.cancel(timer);
+     timer = $timeout(function() {
+       timer = undefined;
+       func.apply(context, args);
+     }, wait || 10);
+   };
+ }
+ /**
+  * Build handler to open/close a SideNav; when animation finishes
+  * report completion in console
+  */
+ function buildDelayedToggler(navID) {
+   return debounce(function() {
+     // Component lookup should always be available since we are not using `ng-if`
+     $mdSidenav(navID)
+       .toggle()
+       .then(function () {
+       });
+   }, 200);
+ }
+ function buildToggler(navID) {
+   return function() {
+     // Component lookup should always be available since we are not using `ng-if`
+     $mdSidenav(navID)
+       .toggle()
+       .then(function () {
+       });
+   };
+ }
+ $scope.close = function () {
+   $mdSidenav('right').close()
+     .then(function () {
+     });
+ };
 
 })

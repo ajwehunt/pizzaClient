@@ -4,12 +4,15 @@ body {
 }
 
 //PIZZA LIST
-.pizzaExplorer {
-  padding-top: 140px;
+.outerContainer {
   background-color: #421c1c;
   background-image: linear-gradient(335deg, #370505 23px, transparent 23px), linear-gradient(155deg, #430707 23px, transparent 23px), linear-gradient(335deg, #410505 23px, transparent 23px), linear-gradient(155deg, #470b0b 23px, transparent 23px);
   background-size: 58px 58px;
   background-position: 0px 2px, 4px 35px, 29px 31px, 34px 6px;
+}
+
+.pizzaExplorer {
+  padding-top: 140px;
 }
 
 .pizzaExplorer::-webkit-scrollbar {
@@ -20,6 +23,10 @@ body {
   display: flex;
   padding: 0 4%;
   justify-content: space-around;
+}
+
+md-content.md-default-theme, md-content {
+  background-color: transparent!important;
 }
 
 //PIZZA
@@ -44,6 +51,17 @@ body {
   -webkit-box-shadow: 23px 35px 45px 6px rgba(0,0,0,0.48);
   -moz-box-shadow: 23px 35px 45px 6px rgba(0,0,0,0.48);
   box-shadow: 23px 35px 45px 6px rgba(0,0,0,0.48);
+}
+
+.pizzaOptions {
+  display: flex !important;
+  flex-direction: row!important;
+  height: 44px !important;
+  width: 307px !important;
+}
+
+.pizzaOptions md-menu {
+  position: relative;
 }
 
 .pizza:focus {
@@ -147,6 +165,7 @@ body {
   visibility: hidden;
   font-weight: 900;
   font-size: 1.6em;
+  text-shadow: 0px 0px 10px white;
 }
 
 .selected-item .pizzaInfo button {
@@ -227,6 +246,14 @@ body {
   padding-left: 9px;
 }
 
+.addOrderBtn {
+  top: 272px!important;
+}
+
+.addOrderBtn p {
+  margin-left: -18px!important;
+}
+
 .addPizzaBtn button {
   height: 65px;
   padding: 0;
@@ -259,9 +286,13 @@ body {
   top: 148px;
 }
 
+.pizzaBuilder input {
+  margin: 0px;
+  height: 29px;
+}
+
 .pizzaBuilder md-content {
   padding-right: 70px;
-  height: 360px;
 }
 
 .md-toolbar-tools {
@@ -286,6 +317,45 @@ body {
 
 .toppingForm button {
   margin-top: 0;
+}
+
+//ORDER BUILDER
+
+.orderBuilder {
+  z-index: 21;
+  height: 439px;;
+  width: 400px;
+  top: 273px;
+}
+
+.orderBuilder md-content {
+  padding-right: 78px;
+  height: 360px;
+}
+
+.orderBuilder ul {
+  margin: 0px;
+  font-weight: 600;
+}
+
+.orderBuilder p {
+  margin-top: 5px;
+  padding: 6px 20px;
+  font-size: .8rem;
+}
+
+.orderForm md-input-container {
+  display: block;
+  margin: 0px;
+  height: 60px;
+}
+
+.orderForm button {
+  margin-top: 0px;
+}
+
+.collapsible-header {
+  background-color: #eee;
 }
 
 //BACKDROP
@@ -358,6 +428,10 @@ md-backdrop.md-opaque {
 
   .pizzaBuilder {
     top: 97px;
+  }
+
+  .orderBuilder md-content {
+    padding-right: 47px;
   }
 
   .md-toolbar-tools {
