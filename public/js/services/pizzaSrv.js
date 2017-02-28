@@ -1,14 +1,15 @@
 angular.module('pizzaApp')
-.service('pizzaSrv', function($http) {
+.service('pizzaSrv', function($http, $q) {
 
-  const apiUrl = 'https://pizzaserver.herokuapp.com'
+  let pizzaApi = 'https://pizzaserver.herokuapp.com';
+  let ordersApi = '/api';
 
 
   //Get pizza list
   this.getPizzas = () => {
     return $http({
       method: 'GET',
-      url: apiUrl + '/pizzas'
+      url: pizzaApi + '/pizzas'
     })
     .then((res) => {
       //filters out pizzas w/ same names and no names
@@ -21,7 +22,7 @@ angular.module('pizzaApp')
   this.addPizza = (pizza, desc) => {
     return $http({
       method: 'POST',
-      url: apiUrl + '/pizzas',
+      url: pizzaApi + '/pizzas',
       data: {
         name: pizza,
         description: desc
@@ -33,7 +34,7 @@ angular.module('pizzaApp')
   this.getToppings = () => {
     return $http({
       method: 'GET',
-      url: apiUrl + '/toppings'
+      url: pizzaApi + '/toppings'
     })
   }
 
@@ -41,7 +42,7 @@ angular.module('pizzaApp')
   this.addTopping = (newTopping) => {
     return $http({
       method: 'POST',
-      url: apiUrl + '/toppings',
+      url: pizzaApi + '/toppings',
       data: {
         name: newTopping
       }
@@ -52,7 +53,7 @@ angular.module('pizzaApp')
   this.getTargetPizzaToppings = (pizzaId) => {
     return $http({
       method: 'GET',
-      url: apiUrl + '/pizzas/' + pizzaId + '/toppings'
+      url: pizzaApi + '/pizzas/' + pizzaId + '/toppings'
     })
     .then((res) => {
       return res
@@ -62,16 +63,64 @@ angular.module('pizzaApp')
     })
   }
 
-
   //Add target Topping to target Pizza
   this.addToppingToPizza = (pizzaId, toppingId) => {
     return $http({
       method: 'POST',
-      url: apiUrl + '/pizzas/' + pizzaId + '/toppings',
+      url: pizzaApi + '/pizzas/' + pizzaId + '/toppings',
       data: {
         topping_id: toppingId
       }
     })
   }
+
+  //Get orders
+  this.getOrders = () => {
+    return $http({
+      method: 'GET',
+      url: ordersApi + '/orders'
+    })
+    .then((orders) => {
+      orders.data = orders.data.filter((x, i, self) => (self.findIndex((t) => t.name === x.name) === i) && x.name)
+      // return orders
+      return orders
+    })
+  }
+
+  //Make a new order
+  this.addOrder = (orderName) => {
+    return $http({
+      method: 'POST',
+      url: ordersApi + '/orders',
+      data: {
+        name: orderName
+      }
+    })
+  }
+
+  // Add pizza to order
+  this.addPizzaToOrder = (pizzaId, pizzaName, orderId) => {
+    return $http({
+      method: 'POST',
+      url: ordersApi + '/pizzas',
+      data: {
+        id: pizzaId,
+        name: pizzaName,
+        orderid: orderId
+      }
+    })
+  }
+
+  //get target order's pizzas
+  this.getTargetOrderPizzas = (orderId) => {
+    return $http({
+      method: 'GET',
+      url: ordersApi + '/orders/' + orderId + '/pizzas'
+    })
+    .then((res) => {
+      return res
+    })
+  }
+
 
 })

@@ -1,16 +1,17 @@
 'use strict';
 
-angular.module('pizzaApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter']);
+angular.module('pizzaApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter', 'ui.materialize']);
 
-angular.module('pizzaApp').service('pizzaSrv', function ($http) {
+angular.module('pizzaApp').service('pizzaSrv', function ($http, $q) {
 
-  var apiUrl = 'https://pizzaserver.herokuapp.com';
+  var pizzaApi = 'https://pizzaserver.herokuapp.com';
+  var ordersApi = '/api';
 
   //Get pizza list
   this.getPizzas = function () {
     return $http({
       method: 'GET',
-      url: apiUrl + '/pizzas'
+      url: pizzaApi + '/pizzas'
     }).then(function (res) {
       //filters out pizzas w/ same names and no names
       res.data = res.data.filter(function (x, i, self) {
@@ -26,7 +27,7 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
   this.addPizza = function (pizza, desc) {
     return $http({
       method: 'POST',
-      url: apiUrl + '/pizzas',
+      url: pizzaApi + '/pizzas',
       data: {
         name: pizza,
         description: desc
@@ -38,7 +39,7 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
   this.getToppings = function () {
     return $http({
       method: 'GET',
-      url: apiUrl + '/toppings'
+      url: pizzaApi + '/toppings'
     });
   };
 
@@ -46,7 +47,7 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
   this.addTopping = function (newTopping) {
     return $http({
       method: 'POST',
-      url: apiUrl + '/toppings',
+      url: pizzaApi + '/toppings',
       data: {
         name: newTopping
       }
@@ -57,7 +58,7 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
   this.getTargetPizzaToppings = function (pizzaId) {
     return $http({
       method: 'GET',
-      url: apiUrl + '/pizzas/' + pizzaId + '/toppings'
+      url: pizzaApi + '/pizzas/' + pizzaId + '/toppings'
     }).then(function (res) {
       return res;
     }, function (err) {
@@ -70,15 +71,67 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http) {
   this.addToppingToPizza = function (pizzaId, toppingId) {
     return $http({
       method: 'POST',
-      url: apiUrl + '/pizzas/' + pizzaId + '/toppings',
+      url: pizzaApi + '/pizzas/' + pizzaId + '/toppings',
       data: {
         topping_id: toppingId
       }
     });
   };
+
+  //Get orders
+  this.getOrders = function () {
+    return $http({
+      method: 'GET',
+      url: ordersApi + '/orders'
+    }).then(function (orders) {
+      orders.data = orders.data.filter(function (x, i, self) {
+        return self.findIndex(function (t) {
+          return t.name === x.name;
+        }) === i && x.name;
+      });
+      // return orders
+      return orders;
+    });
+  };
+
+  //Make a new order
+  this.addOrder = function (orderName) {
+    return $http({
+      method: 'POST',
+      url: ordersApi + '/orders',
+      data: {
+        name: orderName
+      }
+    });
+  };
+
+  // Add pizza to order
+  this.addPizzaToOrder = function (pizzaId, pizzaName, orderId) {
+    return $http({
+      method: 'POST',
+      url: ordersApi + '/pizzas',
+      data: {
+        id: pizzaId,
+        name: pizzaName,
+        orderid: orderId
+      }
+    });
+  };
+
+  //get target order's pizzas
+  this.getTargetOrderPizzas = function (orderId) {
+    return $http({
+      method: 'GET',
+      url: ordersApi + '/orders/' + orderId + '/pizzas'
+    }).then(function (res) {
+      return res;
+    });
+  };
 });
 
 angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $mdSidenav, $mdToast, $log, pizzaSrv) {
+
+  ///////////  PIZZAS  ////////////
 
   //populate pizza list for ng-repeat
   pizzaSrv.getPizzas().then(function (res) {
@@ -226,11 +279,80 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
     }
   };
 
+  ///////////  ORDERS  ////////////
+
+  // Get orders
+  $scope.updateOrders = function () {
+    pizzaSrv.getOrders().then(function (orders) {
+      $scope.orders = orders.data.map(function (x) {
+        //add list of pizzas to orders
+        pizzaSrv.getTargetOrderPizzas(x.id).then(function (pizzas) {
+          var pizzaList = [];
+          pizzas.data.map(function (x) {
+            pizzaList.push(x.name);
+          });
+          x.pizzas = pizzaList;
+        });
+        return x;
+      });
+    });
+  };
+  $scope.updateOrders();
+
+  $scope.newOrderName = '';
+  //Add new order
+  $scope.addNewOrder = function () {
+    var newOrder = $scope.newOrderName;
+    //If no entry for Order => alert user
+    if ($scope.newOrderName === '') {
+      //Error Toast
+      $scope.pizzaAlert('Please enter an order name', '.orderForm');
+
+      //if Order doesnt exist=> add order & alert user
+    } else if ($scope.orders.findIndex(function (x) {
+      return x.name.toLowerCase() === newOrder.toLowerCase();
+    }) === -1) {
+      pizzaSrv.addOrder(newOrder).then(function (res) {
+        //Alert Toast
+        $scope.pizzaAlert('Order Added', '.orderForm');
+        //empty inputs
+        $scope.newOrderName = '';
+        //repopulate order list
+        $scope.orders.push(res.data);
+        $scope.updateOrders();
+      });
+
+      //If Order already exists => alert user
+    } else {
+      //Error Toast
+      $scope.pizzaAlert('This order already exists', '.orderForm');
+      //empty inputs
+      $scope.newOrderName = '';
+    }
+  };
+
+  // Add pizza to order
+  $scope.addPizzaToOrder = function (pizzaId, pizzaName, orderId) {
+    pizzaSrv.addPizzaToOrder(pizzaId, pizzaName, orderId).then(function (res) {
+      $scope.updateOrders();
+    });
+  };
+
+  /////////  MENU UX  /////////////
+
+
   //Open Add Pizza/Toppings Panel
   $scope.toggleRight = buildToggler('right');
   $scope.isOpenRight = function () {
     return $mdSidenav('right').isOpen();
   };
+
+  //Open Add // View Orders Panel
+  $scope.toggleRight2 = buildToggler('right2');
+  $scope.isOpenRight2 = function () {
+    return $mdSidenav('right2').isOpen();
+  };
+
   /**
    * Supplies a function that will continue to operate until the
    * time is up.
