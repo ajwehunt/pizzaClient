@@ -1,1 +1,1 @@
-INSERT INTO pizzas (id, name, orderid)  VALUES ($1, $2, $3);
+INSERT INTO pizzas (name, orderid)  VALUES ($1, $2);

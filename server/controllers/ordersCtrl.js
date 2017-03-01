@@ -24,7 +24,7 @@ module.exports = {
   },
 
   addPizza: function(req, res){
-    db.add_pizza([req.body.id, req.body.name, req.body.orderid], function(err,orders){
+    db.add_pizza([req.body.name, req.body.orderid], function(err,orders){
       if (err) {
         res.status(500).json(err)
       } else {

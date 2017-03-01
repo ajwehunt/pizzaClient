@@ -204,8 +204,8 @@ angular.module('pizzaApp')
   }
 
   // Add pizza to order
-  $scope.addPizzaToOrder = (pizzaId, pizzaName, orderId) => {
-    pizzaSrv.addPizzaToOrder(pizzaId, pizzaName, orderId).then((res) => {
+  $scope.addPizzaToOrder = (pizzaName, orderId) => {
+    pizzaSrv.addPizzaToOrder(pizzaName, orderId).then((res) => {
       $scope.updateOrders()
     })
   }
