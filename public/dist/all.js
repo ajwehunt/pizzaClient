@@ -5,7 +5,7 @@ angular.module('pizzaApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter
 angular.module('pizzaApp').service('pizzaSrv', function ($http, $q) {
 
   var pizzaApi = 'https://pizzaserver.herokuapp.com';
-  var ordersApi = '/api';
+  var ordersApi = 'https://enigmatic-basin-86907.herokuapp.com/';
 
   //Get pizza list
   this.getPizzas = function () {
@@ -106,14 +106,12 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http, $q) {
   };
 
   // Add pizza to order
-  this.addPizzaToOrder = function (pizzaId, pizzaName, orderId) {
+  this.addPizzaToOrder = function (pizzaName, orderId) {
     return $http({
       method: 'POST',
-      url: ordersApi + '/pizzas',
+      url: ordersApi + '/orders/' + orderId + '/pizzas',
       data: {
-        id: pizzaId,
-        name: pizzaName,
-        orderid: orderId
+        name: pizzaName
       }
     });
   };
@@ -332,8 +330,8 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
   };
 
   // Add pizza to order
-  $scope.addPizzaToOrder = function (pizzaId, pizzaName, orderId) {
-    pizzaSrv.addPizzaToOrder(pizzaId, pizzaName, orderId).then(function (res) {
+  $scope.addPizzaToOrder = function (pizzaName, orderId) {
+    pizzaSrv.addPizzaToOrder(pizzaName, orderId).then(function (res) {
       $scope.updateOrders();
     });
   };

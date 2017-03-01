@@ -55,7 +55,7 @@
                           </md-button>
                           <md-menu-content width="4" class='selectNewToppingList'>
                             <md-menu-item ng-repeat="order in orders | unique: 'name'  | orderBy:'-id' track by order.id">
-                              <md-button aria-label='{{order.name}}' ng-click="addPizzaToOrder(pizza.id, pizza.name, order.id)">
+                              <md-button aria-label='{{order.name}}' ng-click="addPizzaToOrder(pizza.name, order.id)">
                                 <span md-menu-align-target>{{order.name}}
                               </md-button>
                             </md-menu-item>
