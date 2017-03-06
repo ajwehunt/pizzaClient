@@ -426,6 +426,9 @@ p, a, li {
 body {
   overflow: hidden; }
 
+button:focus {
+  background-color: inherit; }
+
 .outerContainer {
   background-color: #421c1c;
   background-image: linear-gradient(335deg, #370505 23px, transparent 23px), linear-gradient(155deg, #430707 23px, transparent 23px), linear-gradient(335deg, #410505 23px, transparent 23px), linear-gradient(155deg, #470b0b 23px, transparent 23px);
@@ -482,8 +485,8 @@ md-content.md-default-theme, md-content {
   border: 0; }
 
 .selected-item {
-  height: 375px;
-  width: 375px;
+  height: 380px;
+  width: 380px;
   font-size: .6em; }
 
 .sauce {
@@ -499,16 +502,44 @@ md-content.md-default-theme, md-content {
 
 .cheese {
   position: relative;
-  display: flex;
   width: 97%;
   height: 93%;
   border-radius: 50%;
   background: #f3d255;
   -webkit-box-shadow: inset 0 0 1000px #d88e24;
-  justify-content: center;
-  align-items: center;
-  display: flex;
   text-shadow: 0px 0px 10px white; }
+
+.peps {
+  height: 100%;
+  width: 100%; }
+
+.peps {
+  -ms-transform: rotate(0deg);
+  /* IE 9 */
+  -webkit-transform: rotate(0deg);
+  /* Safari */
+  transform: rotate(0deg); }
+
+.pizza:nth-child(2n+1) .peps {
+  -ms-transform: rotate(270deg);
+  /* IE 9 */
+  -webkit-transform: rotate(270deg);
+  /* Safari */
+  transform: rotate(270deg); }
+
+.pizza:nth-child(3n+1) .peps {
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Safari */
+  transform: rotate(180deg); }
+
+.pizza:nth-child(4n+1) .peps {
+  -ms-transform: rotate(90deg);
+  /* IE 9 */
+  -webkit-transform: rotate(90deg);
+  /* Safari */
+  transform: rotate(90deg); }
 
 .pep {
   position: absolute;
@@ -518,56 +549,78 @@ md-content.md-default-theme, md-content {
   background: #b3241c;
   z-index: 15;
   font-size: 2em;
-  text-align: center;
   padding-top: 10px;
   -webkit-box-shadow: inset 0 0 85px #711712;
   border: 2px solid #871b15;
-  text-indent: -9999px;
   color: #fff;
   transition: 250ms cubic-bezier(0.25, 0.8, 0.25, 1) all; }
 
 .selected-item .pep {
-  width: 38px;
-  height: 38px; }
+  width: 35px;
+  height: 35px; }
 
 .pep.one {
-  margin: 96px 0 0px -22px; }
+  margin: 144px 0 0px 30px; }
 
 .pep.two {
-  margin: -107px 0 0 42px; }
+  margin: 222px 0 0px 93px; }
 
 .pep.three {
-  margin: 103px 0 0 62px; }
+  margin: 119px 0 0 113px; }
 
 .pep.four {
-  margin: 39px 0 0 -103px; }
+  margin: 88px 0 0 211px; }
 
 .pep.five {
-  margin: -46px 0 0 -78px; }
+  margin: 179px 0 0 161px; }
 
 .pep.six {
-  margin: -16px 0 0 92px; }
+  margin: 7px 0 0 155px; }
 
 .pep.seven {
-  margin: -115px 0 0 -50px; }
+  margin: 184px 0 0 234px; }
 
 .pep.eight {
-  margin: 24px 0 0 22px; }
+  margin: 40px 0 0 78px; }
 
-.cheese div {
-  width: 72%;
-  height: 72%;
+.selected-item .pep.one {
+  margin: 199px 0 0px 30px; }
+
+.selected-item .pep.two {
+  margin: 261px 0 0px 107px; }
+
+.selected-item .pep.three {
+  margin: 100px 0 0 29px; }
+
+.selected-item .pep.four {
+  margin: 75px 0 0 251px; }
+
+.selected-item .pep.five {
+  margin: 253px 0 0 198px; }
+
+.selected-item .pep.six {
+  margin: 11px 0 0 160px; }
+
+.selected-item .pep.seven {
+  margin: 180px 0 0 259px; }
+
+.selected-item .pep.eight {
+  margin: 30px 0 0 78px; }
+
+.pizzaInfo {
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 20;
-  transition: cubic-bezier(0.25, 0.8, 0.25, 1) all; }
+  transition: cubic-bezier(0.25, 0.8, 0.25, 1) all;
+  position: absolute;
+  top: 71px;
+  left: -24px; }
 
 .cheese h2 {
-  margin-top: 3%;
-  font-weight: bold;
-  font-size: 2.6em; }
+  font-weight: bolder;
+  font-size: 2.9em; }
 
 .cheese p {
   margin-top: 10px;
@@ -575,7 +628,8 @@ md-content.md-default-theme, md-content {
   font-size: 2.1em; }
 
 .selected-item .pizzaInfo {
-  height: 45%; }
+  left: -12px;
+  top: 50px; }
 
 .pizzaInfo button {
   visibility: hidden;
@@ -584,7 +638,10 @@ md-content.md-default-theme, md-content {
   text-shadow: 0px 0px 10px white; }
 
 .selected-item .pizzaInfo button {
-  visibility: visible; }
+  visibility: visible;
+  height: 12px !important;
+  min-height: 30px;
+  line-height: 5px !important; }
 
 .selectNewToppingList {
   border-radius: 8%;
@@ -598,8 +655,7 @@ md-content.md-default-theme, md-content {
 .targetToppingsList {
   display: flex;
   width: 350px;
-  justify-content: center;
-  margin-top: 10px; }
+  justify-content: center; }
 
 .md-chips.md-default-theme .md-chips, md-chips .md-chips {
   box-shadow: none; }
@@ -677,10 +733,18 @@ md-content.md-default-theme, md-content {
   color: #dfcbcc;
   font-size: 1.1em; }
 
+.aboutBtn {
+  top: 380px;
+  padding: 0;
+  margin: 0;
+  font-size: 3em;
+  color: #005222;
+  padding-right: 8px; }
+
 .pizzaBuilder {
-  z-index: 20;
+  z-index: 21;
   height: 439px;
-  width: 400px;
+  min-width: 400px;
   top: 148px; }
 
 .pizzaBuilder input {
@@ -688,7 +752,7 @@ md-content.md-default-theme, md-content {
   height: 29px; }
 
 .pizzaBuilder md-content {
-  padding-right: 70px; }
+  width: 315px; }
 
 .md-toolbar-tools {
   background: #005222;
@@ -712,12 +776,11 @@ md-content.md-default-theme, md-content {
 .orderBuilder {
   z-index: 21;
   height: 439px;
-  width: 400px;
+  min-width: 400px;
   top: 273px; }
 
 .orderBuilder md-content {
-  padding-right: 78px;
-  height: 360px; }
+  width: 315px; }
 
 .orderBuilder ul {
   margin: 0px;
@@ -736,12 +799,33 @@ md-content.md-default-theme, md-content {
 .orderForm button {
   margin-top: 0px; }
 
+.deletePizza {
+  outline: none;
+  padding-right: 8px;
+  color: #c2c2c2;
+  cursor: pointer; }
+
+.deletePizza:hover {
+  color: #a60311; }
+
 .collapsible-header {
-  background-color: #eee; }
+  background-color: #eee;
+  padding: 0 0 0 1rem; }
+
+.collapsible-header i {
+  outline: none;
+  float: right;
+  margin-right: 0;
+  color: #c2c2c2;
+  font-size: 1.3rem;
+  transition: 500ms cubic-bezier(0.25, 0.8, 0.25, 1) all; }
+
+.collapsible-header i:hover {
+  color: #a60311; }
 
 md-backdrop.md-opaque {
-  opacity: .48;
-  z-index: 2; }
+  opacity: .45;
+  z-index: 21; }
 
 .repeat-animation {
   position: relative; }
@@ -763,17 +847,17 @@ md-backdrop.md-opaque {
 
 @media only screen and (max-width: 768px) {
   .pizzaExplorer {
-    padding-top: 100px; }
+    padding-top: 55px; }
   .pizzaBanner {
-    top: 15px;
-    height: 60px;
-    width: 256px;
-    font-size: .75em;
+    top: 8px;
+    height: 44px;
+    width: 223px;
+    font-size: 0.60em;
     padding-left: 40px; }
   .sidebar {
     width: 56px; }
   .addPizzaBtn {
-    top: 95px;
+    top: 55px;
     font-size: 1em;
     padding-left: 3px; }
   .addPizzaBtn p {
@@ -781,12 +865,21 @@ md-backdrop.md-opaque {
     font-size: .78em; }
   .addPizzaBtn button {
     padding-left: 0; }
+  .addOrderBtn {
+    top: 146px !important; }
   .pizzaBuilder {
-    top: 97px; }
+    top: 58px;
+    min-width: 331px; }
+  .pizzaBuilder md-content {
+    width: 275px; }
+  .orderBuilder {
+    top: 148px;
+    min-width: 331px; }
   .orderBuilder md-content {
-    padding-right: 47px; }
+    width: 275px; }
   .md-toolbar-tools {
-    padding-left: 26px; }
+    padding-left: 26px;
+    font-size: 16px; }
   .md-button {
     min-height: 33px;
     min-width: 69px; }
@@ -794,6 +887,11 @@ md-backdrop.md-opaque {
     margin-left: -22px;
     height: 230px;
     width: 230px; }
+  .pizzaInfo {
+    top: 40px;
+    left: -59px; }
+  .cheese h2 {
+    font-size: 2.5em; }
   .pep {
     width: 25px;
     height: 25px; }
@@ -801,32 +899,52 @@ md-backdrop.md-opaque {
     width: 27px;
     height: 27px; }
   .pep.one {
-    margin: 74px 0 0px -22px; }
+    margin: 142px 0 0px 97px; }
   .pep.two {
-    margin: -67px 0 0 38px; }
+    margin: 48px 0 0 130px; }
   .pep.three {
     margin: 54px 0 0 62px; }
   .pep.four {
-    margin: -25px 0 0 73px; }
+    margin: 8px 0 0 87px; }
   .pep.five {
-    margin: -74px 0 0 -39px; }
+    margin: 105px 0 0 30px; }
   .pep.six {
-    margin: 39px 0 0 -69px; }
+    margin: 99px 0 0 149px; }
   .pep.seven {
-    margin: -15px 0 0 -55px; }
+    margin: 102px 0 0 92px; }
   .pep.eight {
-    margin: 24px 0 0 22px; }
-  .pizzaInfo {
-    position: absolute; }
+    margin: 33px 0 0 27px; }
+  .selected-item .pep.one {
+    margin: 148px 0 0px 30px; }
+  .selected-item .pep.two {
+    margin: 169px 0 0px 101px; }
+  .selected-item .pep.three {
+    margin: 78px 0 0 4px; }
+  .selected-item .pep.four {
+    margin: 75px 0 0 173px; }
+  .selected-item .pep.five {
+    margin: 136px 0 0 158px; }
+  .selected-item .pep.six {
+    margin: 2px 0 0 94px; }
+  .selected-item .pep.seven {
+    margin: 22px 0 0 146px; }
+  .selected-item .pep.eight {
+    margin: 18px 0 0 42px; }
   .selected-item {
     height: 250px;
     width: 250px;
     font-size: .6em; }
+  .selected-item .pizzaInfo {
+    left: -49px;
+    top: 20px; }
+  .pizzaInfo button {
+    font-size: 1.4em;
+    left: 13px; }
   .cheese p {
     margin-top: 5px;
     font-family: 'Italianno', cursive;
-    font-size: 1.4em; }
+    font-size: 1.5em; }
   .targetToppingsList {
-    margin-top: 79px;
     z-index: 10;
-    width: 225px; } }
+    width: 225px;
+    margin-top: 0px; } }

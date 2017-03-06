@@ -20,16 +20,18 @@
           <md-card ng-animate="'animate'" ng-repeat="pizza in pizzas  | filter: findpizza | orderBy:'-id'" ng-click="selectPizza($index, pizza.id, this)" class='pizza' ng-class="{ 'selected-item': $index == targetPizza}">
             <section class='sauce'>
               <section class='cheese'>
-                <section class="pep one">1</section>
-                <section class="pep two">2</section>
-                <section class="pep three">3</section>
-                <section class="pep four">4</section>
-                <section class="pep five">5</section>
-                <section class="pep six">6</section>
-                <section class="pep seven">7</section>
-                <section class="pep eight">8</section>
-                <div>
-                  <div class='pizzaInfo'>
+                <div class="peps">
+                  <section class="pep one"></section>
+                  <section class="pep two"></section>
+                  <section class="pep three"></section>
+                  <section class="pep four"></section>
+                  <section class="pep five"></section>
+                  <section class="pep six"></section>
+                  <section class="pep seven"></section>
+                  <section class="pep eight"></section>
+                </div>
+                <div class='pizzaInfo'>
+                  <div>
                     <h2>{{pizza.name}}
                     </h2>
                     <p>{{pizza.description}}
@@ -76,14 +78,14 @@
       <!-- SIDEBAR -->
       <div flex class='sidebar'>
         <div layout="column" class='addPizzaBtn'>
-          <md-button aria-label='Add a Pizza/Topping'ng-click="toggleRight()">
+          <md-button aria-label='Add a Pizza/Topping' ng-click="toggleRight()">
               <i class="fa fa-plus" aria-hidden="true"></i>
           </md-button>
             <p>Pizza // Topping
             </p>
         </div>
         <div layout="column" class='addPizzaBtn addOrderBtn'>
-          <md-button aria-label='Add an Order'ng-click="toggleRight2()">
+          <md-button aria-label='Add an Order' ng-click="toggleRight2()">
               <i class="fa fa-plus" aria-hidden="true"></i>
           </md-button>
             <p>Orders
@@ -146,14 +148,20 @@
           </form>
           <ul class="collapsible" data-collapsible="accordion" watch>
             <li ng-repeat="order in orders | orderBy:'-id'">
-              <div class="collapsible-header">{{order.name}}</div>
-              <div class="collapsible-body"><p ng-repeat="pizza in order.pizzas track by $index">{{pizza}}</p></div>
+              <div class="collapsible-header">{{order.name}}
+                <i ng-click="removeOrder(order.id)" class="fa fa-times" aria-hidden="true">
+                </i>
+              </div>
+              <div class="collapsible-body">
+                <p ng-repeat="pizza in order.pizzas track by $index">
+                  <i ng-click="deletePizzaFromOrder(order.id, pizza.id)" class="deletePizza fa fa-times" aria-hidden="true">
+                  </i>{{pizza.name}}
+                </p>
+              </div>
             </li>
           </ul>
         </md-content>
       </md-sidenav>
-
-
     <!--  -->
     </div>
     <!-- Scripts -->

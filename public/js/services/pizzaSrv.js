@@ -2,7 +2,7 @@ angular.module('pizzaApp')
 .service('pizzaSrv', function($http, $q) {
 
   let pizzaApi = 'https://pizzaserver.herokuapp.com';
-  let ordersApi = 'https://enigmatic-basin-86907.herokuapp.com/';
+  let ordersApi = 'https://enigmatic-basin-86907.herokuapp.com';
 
 
   //Get pizza list
@@ -98,6 +98,14 @@ angular.module('pizzaApp')
     })
   }
 
+  //Delete order
+  this.deleteOrder = (orderId) => {
+    return $http({
+      method: 'DELETE',
+      url: ordersApi + '/orders/' + orderId
+    })
+  }
+
   // Add pizza to order
   this.addPizzaToOrder = (pizzaName, orderId) => {
     return $http({
@@ -106,6 +114,14 @@ angular.module('pizzaApp')
       data: {
         name: pizzaName
       }
+    })
+  }
+
+  //delete pizza from order
+  this.deletePizzaFromOrder = (orderId, pizzaId) => {
+    return $http({
+      method: 'DELETE',
+      url: ordersApi + '/orders/' + orderId + '/pizzas/' + pizzaId
     })
   }
 
