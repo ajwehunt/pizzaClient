@@ -1,5 +1,5 @@
 angular.module('pizzaApp')
-.controller('pizzaCtrl', function($scope, $timeout, $mdSidenav, $mdToast, $log, pizzaSrv) {
+.controller('pizzaCtrl', function($scope, $timeout, $mdSidenav, $mdDialog, $mdToast, $log, pizzaSrv) {
 
 
 ///////////  PIZZAS  ////////////
@@ -152,6 +152,7 @@ angular.module('pizzaApp')
 
 
 
+
  ///////////  ORDERS  ////////////
 
   // Get orders
@@ -162,7 +163,10 @@ angular.module('pizzaApp')
         pizzaSrv.getTargetOrderPizzas(x.id).then((pizzas)=>{
           let pizzaList = []
           pizzas.data.map((x)=>{
-            pizzaList.push(x.name)
+            pizzaList.push({
+              name : x.name,
+              id : x.id
+            })
           })
           x.pizzas = pizzaList
         })
@@ -171,6 +175,15 @@ angular.module('pizzaApp')
     })
   }
   $scope.updateOrders()
+
+
+
+  //Remove an order
+  $scope.removeOrder = function (orderId) {
+    $scope.orders = $scope.orders.filter((x)=>x.id!==orderId)
+    pizzaSrv.deleteOrder(orderId).then((x)=>{
+    })
+  }
 
 
   $scope.newOrderName = '';
@@ -205,11 +218,35 @@ angular.module('pizzaApp')
 
   // Add pizza to order
   $scope.addPizzaToOrder = (pizzaName, orderId) => {
+
+    // $scope.orders = $scope.orders.map((x) => {
+    //   if (x.id===orderId)
+    // })
+
     pizzaSrv.addPizzaToOrder(pizzaName, orderId).then((res) => {
       $scope.updateOrders()
     })
   }
 
+  //Add Pizza to order from list
+  $scope.addPizzaToOrderInput = (orderId, pizzaname) => {
+    console.log(orderId);
+    console.log(pizzaname);
+  }
+
+  // Remove pizza from order
+  $scope.deletePizzaFromOrder = (orderId, pizzaId) => {
+
+    $scope.orders = $scope.orders.map((x)=>{
+      if (x.id===orderId) {
+        x.pizzas = x.pizzas.filter((y)=>y.id!==pizzaId)
+      }
+      return x
+    })
+
+    pizzaSrv.deletePizzaFromOrder(orderId, pizzaId).then((x)=>{
+    })
+  }
 
 
  /////////  MENU UX  /////////////
@@ -217,12 +254,13 @@ angular.module('pizzaApp')
 
  //Open Add Pizza/Toppings Panel
  $scope.toggleRight = buildToggler('right');
+ //Open Add // View Orders Panel
+ $scope.toggleRight2 = buildToggler('right2');
+
+
  $scope.isOpenRight = () => {
    return $mdSidenav('right').isOpen();
  };
-
- //Open Add // View Orders Panel
- $scope.toggleRight2 = buildToggler('right2');
  $scope.isOpenRight2 = () => {
    return $mdSidenav('right2').isOpen();
  };

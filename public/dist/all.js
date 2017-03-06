@@ -5,7 +5,7 @@ angular.module('pizzaApp', ['ngMaterial', 'ngAnimate', 'ngAria', 'angular.filter
 angular.module('pizzaApp').service('pizzaSrv', function ($http, $q) {
 
   var pizzaApi = 'https://pizzaserver.herokuapp.com';
-  var ordersApi = 'https://enigmatic-basin-86907.herokuapp.com/';
+  var ordersApi = 'https://enigmatic-basin-86907.herokuapp.com';
 
   //Get pizza list
   this.getPizzas = function () {
@@ -105,6 +105,14 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http, $q) {
     });
   };
 
+  //Delete order
+  this.deleteOrder = function (orderId) {
+    return $http({
+      method: 'DELETE',
+      url: ordersApi + '/orders/' + orderId
+    });
+  };
+
   // Add pizza to order
   this.addPizzaToOrder = function (pizzaName, orderId) {
     return $http({
@@ -113,6 +121,14 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http, $q) {
       data: {
         name: pizzaName
       }
+    });
+  };
+
+  //delete pizza from order
+  this.deletePizzaFromOrder = function (orderId, pizzaId) {
+    return $http({
+      method: 'DELETE',
+      url: ordersApi + '/orders/' + orderId + '/pizzas/' + pizzaId
     });
   };
 
@@ -127,7 +143,7 @@ angular.module('pizzaApp').service('pizzaSrv', function ($http, $q) {
   };
 });
 
-angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $mdSidenav, $mdToast, $log, pizzaSrv) {
+angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $mdSidenav, $mdDialog, $mdToast, $log, pizzaSrv) {
 
   ///////////  PIZZAS  ////////////
 
@@ -287,7 +303,10 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
         pizzaSrv.getTargetOrderPizzas(x.id).then(function (pizzas) {
           var pizzaList = [];
           pizzas.data.map(function (x) {
-            pizzaList.push(x.name);
+            pizzaList.push({
+              name: x.name,
+              id: x.id
+            });
           });
           x.pizzas = pizzaList;
         });
@@ -296,6 +315,14 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
     });
   };
   $scope.updateOrders();
+
+  //Remove an order
+  $scope.removeOrder = function (orderId) {
+    $scope.orders = $scope.orders.filter(function (x) {
+      return x.id !== orderId;
+    });
+    pizzaSrv.deleteOrder(orderId).then(function (x) {});
+  };
 
   $scope.newOrderName = '';
   //Add new order
@@ -331,9 +358,35 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
 
   // Add pizza to order
   $scope.addPizzaToOrder = function (pizzaName, orderId) {
+
+    // $scope.orders = $scope.orders.map((x) => {
+    //   if (x.id===orderId)
+    // })
+
     pizzaSrv.addPizzaToOrder(pizzaName, orderId).then(function (res) {
       $scope.updateOrders();
     });
+  };
+
+  //Add Pizza to order from list
+  $scope.addPizzaToOrderInput = function (orderId, pizzaname) {
+    console.log(orderId);
+    console.log(pizzaname);
+  };
+
+  // Remove pizza from order
+  $scope.deletePizzaFromOrder = function (orderId, pizzaId) {
+
+    $scope.orders = $scope.orders.map(function (x) {
+      if (x.id === orderId) {
+        x.pizzas = x.pizzas.filter(function (y) {
+          return y.id !== pizzaId;
+        });
+      }
+      return x;
+    });
+
+    pizzaSrv.deletePizzaFromOrder(orderId, pizzaId).then(function (x) {});
   };
 
   /////////  MENU UX  /////////////
@@ -341,12 +394,12 @@ angular.module('pizzaApp').controller('pizzaCtrl', function ($scope, $timeout, $
 
   //Open Add Pizza/Toppings Panel
   $scope.toggleRight = buildToggler('right');
+  //Open Add // View Orders Panel
+  $scope.toggleRight2 = buildToggler('right2');
+
   $scope.isOpenRight = function () {
     return $mdSidenav('right').isOpen();
   };
-
-  //Open Add // View Orders Panel
-  $scope.toggleRight2 = buildToggler('right2');
   $scope.isOpenRight2 = function () {
     return $mdSidenav('right2').isOpen();
   };

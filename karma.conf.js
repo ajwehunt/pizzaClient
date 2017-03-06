@@ -19,14 +19,16 @@ module.exports = function(config) {
       'node_modules/angular-animate/angular-animate.js',
       'node_modules/angular-aria/angular-aria.js',
       'node_modules/angular-material/angular-material.js',
+      'node_modules/angular-materialize/src/angular-materialize.js',
       'node_modules/angular-filter/dist/angular-filter.js',
-      'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/angular-material/angular-material-mocks.js',
+      'node_modules/angular-mocks/angular-mocks.js',
 
       './public/js/app.js',
       './public/js/pizzaCtrl.js',
       './public/js/services/pizzaSrv.js',
-      './test/spec/pizzaCtrl.spec.js'
+      './test/spec/pizzaCtrl.spec.js',
+      './test/spec/services/pizzaSrv.spec.js'
 
     ],
 
